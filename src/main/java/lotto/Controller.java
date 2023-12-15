@@ -24,6 +24,7 @@ public class Controller {
         List<Lotto> buyLottos = getBuyLottos(payLottoAmount);
         showBuyLottoNumbers(buyLottos);
         setPrizeLotto();
+        showResult(buyLottos);
     }
 
     private int getPayLottoAmount() {
@@ -95,5 +96,9 @@ public class Controller {
                 System.out.println(e.getMessage());
             }
         }
+    }
+
+    private void showResult(List<Lotto> buyLottos) {
+        lottoPrizeService.calculateRank(buyLottos);
     }
 }

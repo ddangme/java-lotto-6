@@ -55,4 +55,10 @@ public class Lotto {
     public boolean containNumber(int number) {
         return numbers.contains(number);
     }
+
+    public int getSameNumberCount(Lotto prizeLotto) {
+        return (int) numbers.stream()
+                .filter(prizeLotto::containNumber)
+                .count();
+    }
 }
