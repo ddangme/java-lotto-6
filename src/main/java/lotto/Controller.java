@@ -2,6 +2,7 @@ package lotto;
 
 import lotto.constant.ErrorMessage;
 import lotto.constant.LottoConst;
+import lotto.constant.Rank;
 import lotto.domain.Lotto;
 import lotto.service.LottoAutoGenerateService;
 import lotto.service.LottoPrizeService;
@@ -11,6 +12,7 @@ import lotto.view.OutputView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class Controller {
 
@@ -100,5 +102,7 @@ public class Controller {
 
     private void showResult(List<Lotto> buyLottos) {
         lottoPrizeService.calculateRank(buyLottos);
+        Map<Rank, Integer> result = lottoPrizeService.getResult();
+        outputView.printLottoPrizeResult(result);
     }
 }
