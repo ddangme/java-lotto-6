@@ -7,7 +7,7 @@ import lotto.domain.Lotto;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AutoGenerateLottoService {
+public class LottoAutoGenerateService {
 
     public List<Lotto> generateLottos(int payLottoCount) {
         List<Lotto> autoGenerateLotto = new ArrayList<>();

@@ -3,7 +3,8 @@ package lotto;
 import lotto.constant.ErrorMessage;
 import lotto.constant.LottoConst;
 import lotto.domain.Lotto;
-import lotto.service.AutoGenerateLottoService;
+import lotto.service.LottoAutoGenerateService;
+import lotto.service.LottoPrizeService;
 import lotto.utils.ParseUtil;
 import lotto.view.InputView;
 import lotto.view.OutputView;
@@ -15,12 +16,14 @@ public class Controller {
 
     InputView inputView = new InputView();
     OutputView outputView = new OutputView();
-    AutoGenerateLottoService autoGenerateLottoService = new AutoGenerateLottoService();
+    LottoAutoGenerateService lottoAutoGenerateService = new LottoAutoGenerateService();
+    LottoPrizeService lottoPrizeService = new LottoPrizeService();
 
     public void run() {
         int payLottoAmount = getPayLottoAmount();
         List<Lotto> buyLottos = getBuyLottos(payLottoAmount);
         showBuyLottoNumbers(buyLottos);
+        setPrizeLotto();
     }
 
     private int getPayLottoAmount() {
@@ -48,7 +51,7 @@ public class Controller {
 
     private List<Lotto> getBuyLottos(int payLottoAmount) {
         int payLottoCount = payLottoAmount / LottoConst.UNIT_PAY_LOTTO_MONEY;
-        return autoGenerateLottoService.generateLottos(payLottoCount);
+        return lottoAutoGenerateService.generateLottos(payLottoCount);
     }
 
     private void showBuyLottoNumbers(List<Lotto> lottos) {
@@ -61,4 +64,36 @@ public class Controller {
         outputView.printBuyLottos(buyLottoNumbers);
     }
 
+    private void setPrizeLotto() {
+        setPrizeLottoNumbers();
+        setPrizeBonusNumber();
+    }
+
+    private void setPrizeLottoNumbers() {
+        while (true) {
+            try {
+                String inputPrizeLottoNumbers = inputView.inputPrizeLottoNumberMessage();
+                List<Integer> prizeLottoNumbers = ParseUtil.stringToIntegerList(inputPrizeLottoNumbers);
+
+                lottoPrizeService.setPrizeLotto(prizeLottoNumbers);
+                break;
+            } catch (IllegalArgumentException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+    }
+
+    private void setPrizeBonusNumber() {
+        while (true) {
+            try {
+                String inputPrizeBonusNumber = inputView.inputBonusLottoNumberMessage();
+                int prizeBonusNumber = ParseUtil.stringToInt(inputPrizeBonusNumber);
+
+                lottoPrizeService.setBonusNumber(prizeBonusNumber);
+                break;
+            } catch (IllegalArgumentException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+    }
 }

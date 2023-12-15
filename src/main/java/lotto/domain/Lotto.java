@@ -4,7 +4,9 @@ import lotto.constant.ErrorMessage;
 import lotto.constant.LottoConst;
 
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class Lotto {
@@ -18,8 +20,29 @@ public class Lotto {
     }
 
     private void validate(List<Integer> numbers) {
+        validateLottoNumberCount(numbers);
+        validateLottoNumberRange(numbers);
+        validateLottoNumberDuplicate(numbers);
+    }
+
+    private void validateLottoNumberDuplicate(List<Integer> numbers) {
+        Set<Integer> noDuplicateNumbers = new HashSet<>(numbers);
+        if (noDuplicateNumbers.size() != numbers.size()) {
+            throw new IllegalArgumentException(ErrorMessage.LOTTO_NUMBER_DUPLICATE_ERROR_MESSAGE);
+        }
+    }
+
+    private void validateLottoNumberRange(List<Integer> numbers) {
+        for (Integer number : numbers) {
+            if (number < LottoConst.MIN_LOTTO_NUMBER || number > LottoConst.MAX_LOTTO_NUMBER) {
+                throw new IllegalArgumentException(ErrorMessage.LOTTO_NUMBER_RANGE_ERROR_MESSAGE);
+            }
+        }
+    }
+
+    private void validateLottoNumberCount(List<Integer> numbers) {
         if (numbers.size() != LottoConst.LOTTO_NUMBER_COUNT) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException(ErrorMessage.LOTTO_NUMBER_SIZE_ERROR_MESSAGE);
         }
     }
 
@@ -29,5 +52,7 @@ public class Lotto {
             .collect(Collectors.joining(", "));
     }
 
-    // TODO: 추가 기능 구현
+    public boolean containNumber(int number) {
+        return numbers.contains(number);
+    }
 }
